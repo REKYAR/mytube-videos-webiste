@@ -1,0 +1,23 @@
+* {
+    font-family: sans-serif;
+}
+body{
+    background-color: gainsboro;
+}
+div.content {
+    height: 100px;
+    width: 100px;
+    border: 1px black;
+    background-color: #b8b8b8;
+    margin: auto;
+}
+div.form{
+    padding: 30px;
+    height: 210px;
+    width: 190px;
+    align-self: center;
+    align-content: center;
+    margin: auto;
+    border: 2px black;
+    background-color: #b8b8b8;
+}

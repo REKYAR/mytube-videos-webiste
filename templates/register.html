@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        function ValidatePasswords() {
+            password1 = window.document.forms.register_form.password.value;
+            password2 = window.document.forms.register_form.password_repeated.value;
+            if (password1===password2){
+                console.log('true')
+                window.document.forms.register_form.submit.type='submit';
+                window.document.getElementById('password_info').style="opacity: 0.0;"
+            }else {
+                console.log('false')
+                window.document.forms.register_form.submit.type='hidden';
+                window.document.getElementById('password_info').style="color:red;background: rgba(255,0,0,0.30);width:190px;"
+            }
+        }
+    </script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'base.html' %}
+</head>
+<body>
+
+    <div class="form">
+        {{ message | default('Enter your credentials:') }}<br>
+        <form action="/register" method="POST" enctype="multipart/form-data" name="register_form">
+            <br><input type="text" placeholder="login" name="login"><br><br>
+            <input type="password", placeholder="password" name="password" ><br>
+            <input type="password", placeholder="repeat password" name="password_repeated" oninput="ValidatePasswords()"><br>
+            <div id="password_info" style="opacity: 0.0;">Passwords do not match</div>
+            Select your profile picture:<br>
+            <br><input type="file" name="file" ><br><br>
+            <input type="hidden" value="Submit" name="submit">
+        </form>
+    </div>
+</body>
+</html>

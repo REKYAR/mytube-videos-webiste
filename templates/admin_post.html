@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'base.html' %}
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if isadmin is sameas true  %}
+        {% include 'searchbar_admin.html' ignore missing with context%}
+    {% elif logged_in is sameas true %}
+        {% include 'searchbar.html' ignore missing with context%}
+    {% else %}
+        {% include 'searchbar_logged_out.html' %}
+    {% endif %}
+    <div class="admin_post">
+        {{ upload_date }}<br>
+        { title }} by @<a href="/general/user/{{user_id}}">{{user_name}}</a> <br><br>
+        Tags:
+        {% for tag in tags %}
+        #{{tag}}
+        {% endfor %}
+        <br><br>
+        {{description}}
+    </div>
+        <br><br><br>
+        Comments:
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+    function DisplayHelp(){
+            alert("Search @user to search for user, search #tag to search for user posts reffering to tag, search $tag to search for admin posts reffering to tag, search with plaintext to search by title and description");
+        }
+    </script>
+    {% include 'base.html' %}
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="navbar"><a href="/">Main Page</a> | <a href="/general/login">Log In</a>
+    <form action="/general/query" method="GET" enctype="multipart/form-data"  name="query_form" onsubmit="AddParams"><input type="text" placeholder="Enter your query" onclick="DisplayHelp()" name="query"><input type="submit" value="Search" name="submit" onclick="AddParams()"></form></div>
+</body>
+</html>

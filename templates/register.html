@@ -21,10 +21,16 @@
     {% include 'base.html' %}
 </head>
 <body>
-
+    {% if isadmin is sameas true  %}
+        {% include 'searchbar_admin.html' ignore missing with context%}
+    {% elif logged_in is sameas true %}
+        {% include 'searchbar.html' ignore missing with context%}
+    {% else %}
+        {% include 'searchbar_logged_out.html' %}
+    {% endif %}
     <div class="form">
         {{ message | default('Enter your credentials:') }}<br>
-        <form action="/register" method="POST" enctype="multipart/form-data" name="register_form">
+        <form action="/general/register" method="POST" enctype="multipart/form-data" name="register_form">
             <br><input type="text" placeholder="login" name="login"><br><br>
             <input type="password", placeholder="password" name="password" ><br>
             <input type="password", placeholder="repeat password" name="password_repeated" oninput="ValidatePasswords()"><br>

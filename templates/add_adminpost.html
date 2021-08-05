@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'base.html' %}
+</head>
+<body>
+    {% if isadmin is sameas true  %}
+        {% include 'searchbar_admin.html' ignore missing with context%}
+    {% elif logged_in is sameas true %}
+        {% include 'searchbar.html' ignore missing with context%}
+    {% else %}
+        {% include 'searchbar_logged_out.html' %}
+    {% endif %}
+    <div class="form" >
+        {{ message | default('Upload your video:') }}
+        <form action="/admin/add_adminpost" method="POST" id="adminpost_form" >
+            <input type="text" name="Title" placeholder="Title"><br><br>
+            <input type="text" name="Tags" placeholder="Tags semicolon(;) separated, 1000 chars max)"><br><br>
+            <textarea name="Description" placeholder="Post text, 5000 characters max" form="adminpost_form"></textarea><br><br>
+            <input type="submit", name="Post">
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'base.html' %}
+    <script>
+
+        function upvote() {
+            var socket_up_post = new WebSocket("ws://" + location.host + "/up_post");
+            uid="{{ cuser_id | default('-1') }}";
+            vid="{{ vid }}";
+            //console.log("ws://" + location.host + "/websocket/up_post");
+            socket_up_post.onopen = function add_one_post() {
+                //console.log('rdy');
+                socket_up_post.send(JSON.stringify({'uid':uid, 'vid':vid}));
+               // console.log('sent')
+                //socket_up_post.close()
+            };
+
+        }
+        function downvote() {
+            var socket_up_post = new WebSocket("ws://" + location.host + "/down_post");
+            uid="{{ cuser_id | default('-1') }}";
+            vid="{{ vid }}";
+            //console.log("ws://" + location.host + "/websocket/up_post");
+            socket_up_post.onopen = function add_one_post() {
+                //console.log('rdy');
+                socket_up_post.send(JSON.stringify({'uid':uid, 'vid':vid}));
+                //console.log('sent')
+                //socket_up_post.close()
+            };
+
+        }
+    </script>
+</head>
+<body>
+    {% if isadmin is sameas true  %}
+        {% include 'searchbar_admin.html' ignore missing with context%}
+    {% elif logged_in is sameas true %}
+        {% include 'searchbar.html' ignore missing with context%}
+    {% else %}
+        {% include 'searchbar_logged_out.html' %}
+    {% endif %}
+    <div class="video_post">
+        <button onclick="upvote()">+</button> | <button onclick="downvote()">-</button>
+        {{ upload_date }}<br>
+        <a href="/general/vpost/{{ vid }}"> {{ video_title }}</a> uploaded by @<a href="/general/user/{{user_id}}">{{user_name}}</a> <br><br>
+        Tags:
+        {% for tag in video_tags %}
+        #{{tag}}
+        {% endfor %}
+        <br><br>
+        {{video_description}}
+    </div>
+        <br><br><br>
+        Comments:
+
+
+</body>
+</html>

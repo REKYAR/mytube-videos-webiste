@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'base.html' %}
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if isadmin is sameas true  %}
+        {% include 'searchbar_admin.html' ignore missing with context%}
+    {% elif logged_in is sameas true %}
+        {% include 'searchbar.html' ignore missing with context%}
+    {% else %}
+        {% include 'searchbar_logged_out.html' %}
+    {% endif %}
+    <div class="form" >
+        {{ message | default('Upload your video:') }}
+        <form action="/user/add_video" method="POST" enctype="multipart/form-data" id="video_upload_form" >
+            <input type="text" name="Title" placeholder="Title"><br><br>
+            <input type="text" name="Tags" placeholder="Tags semicolon(;) separated, 500 chars max)"><br><br>
+            Allowed extensions are: MOV, MP4, MPEG, AVI, WMV, WEBM<br>
+            <input type="file" name="file"><br><br>
+            <textarea name="Description" placeholder="Description of your video, 2000 characters max" form="video_upload_form"></textarea><br><br>
+            <input type="submit", name="Upload">
+        </form>
+    </div>
+</body>
+</html>

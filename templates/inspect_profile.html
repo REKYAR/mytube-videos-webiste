@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile of {{user_login }}</title>
+    {% include 'base.html' %}
+</head>
+<body>
+    {% if isadmin is sameas true  %}
+        {% include 'searchbar_admin.html' ignore missing with context%}
+    {% elif logged_in is sameas true %}
+        {% include 'searchbar.html' ignore missing with context%}
+    {% else %}
+        {% include 'searchbar_logged_out.html' %}
+    {% endif %}
+    <div class="profile">
+        <h3>{{ user_login }}</h3><br><br>
+        <img src="{{ pic_id }}"><br>
+        account created on: {{ created_on }}<br>
+        last logged in: {{ last_login }}<br>
+        status: {{ status }}
+        {% if is_banned == 'True' %}
+         USER IS CURRENTLY BANNED
+        {% endif %}<br>
+        <a href="/general/user_posts/{{ user_id }}">User's posts</a><br>
+        <a href="/general/user_comments/{{ user_id }}">User's comments</a>
+    </div>
+
+</body>
+</html>

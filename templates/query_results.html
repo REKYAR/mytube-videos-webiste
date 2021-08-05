@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% include 'base.html' %}
+</head>
+<body>
+    {% if isadmin is sameas true  %}
+        {% include 'searchbar_admin.html' ignore missing with context%}
+    {% elif logged_in is sameas true %}
+        {% include 'searchbar.html' ignore missing with context%}
+    {% else %}
+        {% include 'searchbar_logged_out.html' %}
+    {% endif %}
+        <h4>Query results:</h4><br><br>
+        {% for element in results %}
+            {% if element.0 == '1' %}
+                @<a href="/general/user/{{element.1.0}}">{{element.1.1}}</a><br>
+            {% elif element.0 == '2' %}
+                <a href="/general/video_post/{{element.1.1}}">{{element.1.5}}</a><br>
+            {% elif element.0 == '3' %}
+                <a href="/general/admin_post/{{element.1.5}}">{{element.1.4}}</a><br>
+            {% endif %}
+        {% endfor %}
+
+</body>
+</html>

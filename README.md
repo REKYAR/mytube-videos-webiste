@@ -13,6 +13,7 @@ routers/user.py contains handlers for user(mostly post related) actions
 routers/websockters.py manages websockets
 video content is stored locally in video_files folder as well as profile pictures are in profile_pictures
 
+----------READ BELOW DESCRIPTIONS IN RAW VIEW----------
 
 db tables:
                  List of relations

@@ -43,7 +43,7 @@
         {% include 'searchbar_logged_out.html' %}
     {% endif %}
     <div class="video_post">
-        <button onclick="upvote()">+</button> | <button onclick="downvote()">-</button>
+        <button onclick="upvote()">+</button> | <button onclick="downvote()">-</button> | Points: {{pval}} <br>
         {{ upload_date }}<br>
         <a href="/general/vpost/{{ vid }}"> {{ video_title }}</a> uploaded by @<a href="/general/user/{{user_id}}">{{user_name}}</a> <br><br>
         Tags:
@@ -54,8 +54,25 @@
         {{video_description}}
     </div>
         <br><br><br>
-        Comments:
-
+        Comments:<br><br>
+    {% if logged_in is sameas true  %}
+        <a href="/general/add_comment/{{vid}}">
+       <button>Add Comment</button>
+     </a><br><br>
+    {% endif %}
+    {% for comm in comms %}
+    {% set indent = comm.1 | int %}
+    {% set indent = indent*20 %}
+    <div style="margin-left: {{ indent }}px">
+        @<a href="/general/user/{{comm.0.0}}">{{comm.0.3}}</a> : {{comm.0.1}}<br>
+        {{comm.0.2}}<br>
+        {% if logged_in is sameas true  %}
+        <a href="/general/add_reply/{vid}/{{comm.0.4}}">
+       <button>Add Reply</button>
+        </a>{% endif %}
+        <br>
+    </div>
+    {% endfor %}
 
 </body>
 </html>

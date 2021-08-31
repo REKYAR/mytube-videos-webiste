@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add comment</title>
+    {% include 'base.html' %}
+</head>
+<body>
+    {% if isadmin is sameas true  %}
+        {% include 'searchbar_admin.html' ignore missing with context%}
+    {% elif logged_in is sameas true %}
+        {% include 'searchbar.html' ignore missing with context%}
+    {% else %}
+        {% include 'searchbar_logged_out.html' %}
+    {% endif %}
+    <br><br>
+    Comment test:
+    <form action="/general/add_comment/{{pid}}" method="POST" id="commentpost_form" >
+            <textarea name="Comment" placeholder="Comment text, 3000 characters max" form="commentpost_form"></textarea><br><br>
+            <input type="submit", name="Post">
+    </form>
+
+</body>
+</html>

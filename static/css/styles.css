@@ -13,11 +13,22 @@ div.content {
 }
 div.form{
     padding: 30px;
-    height: 210px;
+    height: 260px;
     width: 190px;
     align-self: center;
     align-content: center;
     margin: auto;
     border: 2px black;
     background-color: #b8b8b8;
+}
+
+div.video_post{
+    background-color: #b8b8b8;
+    padding: 30px;
+    height: 260px;
+    width: 1000px;
+    align-self: center;
+    align-content: center;
+    margin: auto;
+    border: 2px black;
 }

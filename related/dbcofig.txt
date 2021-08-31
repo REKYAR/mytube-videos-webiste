@@ -1,0 +1,58 @@
+commands for setting up your instance of database for this project
+
+#table users
+CREATE TABLE public.users
+( user_id serial PRIMARY KEY,
+ user_login VARCHAR ( 50 ) UNIQUE NOT NULL,
+ user_password VARCHAR ( 64 ) NOT NULL,
+ created_on TIMESTAMP NOT NULL,
+ last_login TIMESTAMP,
+ tag_whitelist VARCHAR ( 500 ),
+ tag_blacklist VARCHAR ( 500 ),
+ status BOOL, -> FALSE:regular, TRUE:admin
+ warn_count INT,
+ is_banned BOOL);
+
+  #users<->profile pictures
+CREATE TABLE public.users_pfps
+( user_id INT NOT NULL,
+ profile_picture_id VARCHAR(40) NOT NULL);
+
+ #users<->comments
+CREATE TABLE public.users_likes
+( user_id INT NOT NULL,
+ comment_id INT NOT NULL);
+
+#comments
+CREATE TABLE public.comments
+( comment_id serial PRIMARY KEY,
+ user_id INT NOT NULL,
+ user_login VARCHAR ( 50 ) UNIQUE NOT NULL,
+ created_on TIMESTAMP NOT NULL);
+
+ #video
+ CREATE TABLE public.videos
+ ( user_id INT NOT NULL,
+ vid_id VARCHAR ( 40 ) UNIQUE NOT NULL,
+ created_on TIMESTAMP NOT NULL,
+ description VARCHAR ( 2000 ),
+ tags VARCHAR ( 500 ),
+ title varchar(80)
+ );
+
+#admin_posts
+ CREATE TABLE public.admin_posts
+ ( admark_id INT NOT NULL, #same as user id
+ created_on TIMESTAMP NOT NULL,
+ description VARCHAR ( 5000 ),
+ tags VARCHAR ( 1000 ),
+ title varchar(80)
+ );
+
+CREATE TABLE public.users_post_likes
+( user_id INT NOT NULL,
+ vid_id VARCHAR ( 40 ) NOT NULL);
+
+CREATE TABLE post_comments (post_id VARCHAR(40) NOT NULL, comment_id INT NOT NULL );
+CREATE TABLE comments_replies (parent_id INT NOT NULL, child_id INT NOT NULL );
+CREATE TABLE user_bans (user_id INT NOT NULL, ban_data INT NOT NULL, day_issued  TIMESTAMP NOT NULL);

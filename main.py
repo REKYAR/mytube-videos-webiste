@@ -1,58 +1,70 @@
 from typing import Optional
-from fastapi import FastAPI, Request, APIRouter
+from fastapi import FastAPI, Request, APIRouter,Cookie,Depends, WebSocket
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from pathlib import Path
+import os
+import psycopg2
+import  dbinteractions
+from routers import admin,general,user,websockets
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.security import OAuth2PasswordBearer
+from functions_and_utils import templates,session_token_list,access_tokens
+
+
 
 #configurating app
 app = FastAPI()
-templates = Jinja2Templates(directory='templates')
+app.include_router(general.general)
+app.include_router(user.user)
+app.include_router(admin.admin)
+app.include_router(websockets.ws)
+
 app.mount("/static",
           StaticFiles(directory=Path(__file__).parent.parent.absolute()/'static'),
           name='static')
+app.mount("/video_files",
+          StaticFiles(directory=Path(__file__).parent.parent.absolute()/'video_files'),
+          name='video_files')
+app.mount("/profile_pictures",
+          StaticFiles(directory=Path(__file__).parent.parent.absolute()/'profile_pictures'),
+          name='profile_pictures')
 
-class Item(BaseModel):
-    name: str
-    price: float
-    is_offer: Optional[bool] = None
+#pg:psql to open db
+
+#email:mytube-auto@yandex.com
+#login:mytube-auto
+#passwd:vbrigbi4n5o;i8t905jhotnib...6u4g
+
 
 
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
-@app.get("/register" ,response_class=HTMLResponse)
-def read_item(request:Request):
-    return templates.TemplateResponse('register.html',{'request':request})
-
-
-@app.post('/register')
-async def bruh(request:Request):
-    form_data = await request.form()
-    print(form_data)
-    login=form_data['login']
-    password=form_data['password']
-    password2=form_data['password_repeated']
-    if password!=password2 or password2=='' or password2=='':
-        return templates.TemplateResponse('register.html', {'request': request, 'message':''})
-    file=form_data['file']
-    if file.filename!='':
-        file = form_data['file']
-        print(file)
-        print(file.filename)
-        print(file.filename)
+def read_root(request:Request,session_token: str = Cookie(None)):
+    if session_token in session_token_list:
+        logged_in=True
+        cuser_id=access_tokens[session_token]['user_id']
+        isadmin=access_tokens[session_token]['status']
     else:
-        print('default')
+        logged_in=False
+        cuser_id=''
+        isadmin=False
+    return templates.TemplateResponse('feed.html', {'request':request, 'logged_in':logged_in, 'cuser_id':cuser_id, 'isadmin':isadmin})
 
-        #default pfp
+@app.get('/noresource')
+def noresource():
+    return 'hmm, It seems like the resource you are looking for does not exist.'
+@app.get('/banned')
+def noresource():
+    return 'you have been banned'
 
-@app.put("/items/{item_id}")
-def update_item(item_id: int, item: Item):
-    return {"item_name": item.name, "item_id": item_id}
-# Press the green button in the gutter to run the script.
-#if __name__ == '__main__':
-#    app.run()
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# @app.websocket('/up_post')
+# async def up_post(websocket: WebSocket):
+#     print('CONNECTING...')
+#     await websocket.accept()
+#     print('CONNECTED')
+#     while True:
+#         data = await websocket.receive_json()
+#         print(data)
+
